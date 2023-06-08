@@ -1,6 +1,12 @@
 {
     "version": 2,
     "name": "api-ghaya-birthday",
+    "builds": [
+        {
+            "src": "index.js",
+            "use": "@vercel/node"
+        }
+    ],
     "routes": [
         {
             "src": "/(.*)",
