@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require('cors');
 const Router = require("./routes")
+import { inject } from '@vercel/analytics';
 
 app.use(express.json());
 app.use(cors());
@@ -23,4 +24,5 @@ db.once("open", function () {
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`API server listening on port ${port}`);
+    inject();
 });
