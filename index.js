@@ -9,6 +9,10 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 app.use(cors());
 
+app.get('/', (req, res) => {
+    res.send('API')
+})
+
 app.post('/message/send', (req, res) => {
     console.log(req.body)
     // importing the fs module
