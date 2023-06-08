@@ -1,57 +1,25 @@
 const express = require('express');
 const app = express();
-const fs = require("fs");
+const mongoose = require("mongoose");
 const cors = require('cors');
-const bodyParser = require('body-parser')
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-    extended: true
-}));
+const Router = require("./routes")
+
+app.use(express.json());
 app.use(cors());
+app.use(Router);
 
-app.get('/', (req, res) => {
-    res.send('API')
-})
-
-app.post('/message/send', (req, res) => {
-    console.log(req.body)
-    // importing the fs module
-    let message;
-    // initializing a JavaScript object
-    const obj = {
-        name: req.body.name,
-        message: req.body.message,
-        gift: 0,
-    };
-
-    const fs = require("fs");
-
-    // the .json file path
-    const JSON_FILE = "data.json";
-
-    try {
-        // reading the JSON file
-        let jsonData = fs.readFileSync(JSON_FILE);
-
-        // parsing the JSON content
-        const data = JSON.parse(jsonData);
-
-        data.push(obj);
-
-        jsonData = JSON.stringify(data);
-
-        // updating the JSON file
-        fs.writeFileSync(JSON_FILE, jsonData);
-        message = "Sukses";
-    } catch (error) {
-        // logging the error
-        console.error(error);
-        message = error;
-        throw error;
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.mfamuz3.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
     }
-    res.send(message);
-});
+);
 
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error: "));
+db.once("open", function () {
+    console.log("Connected successfully");
+});
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`API server listening on port ${port}`);
