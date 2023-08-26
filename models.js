@@ -9,6 +9,9 @@ const MessageSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    presence: {
+        type: String,
+    },
     gift: {
         type: Number,
     },
